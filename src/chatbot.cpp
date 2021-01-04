@@ -10,11 +10,11 @@
 
 // constructor WITHOUT memory allocation
 ChatBot::ChatBot()
-{
+{    
     // invalidate data handles
-    _image = nullptr;
+    _image = NULL;
     _chatLogic = nullptr;
-    _rootNode = nullptr;
+    _rootNode = nullptr;    
 }
 
 // constructor WITH memory allocation
@@ -25,25 +25,59 @@ ChatBot::ChatBot(std::string filename)
     // invalidate data handles
     _chatLogic = nullptr;
     _rootNode = nullptr;
-
-    // load image into heap memory
+    
+    // load image into heap memory  
     _image = new wxBitmap(filename, wxBITMAP_TYPE_PNG);
 }
 
 ChatBot::~ChatBot()
 {
-    std::cout << "ChatBot Destructor" << std::endl;
-
+    std::cout << "ChatBot Destructor " << this << std::endl;    
     // deallocate heap memory
     if(_image != NULL) // Attention: wxWidgets used NULL and not nullptr
-    {
+    {     
         delete _image;
         _image = NULL;
-    }
+    }    
 }
+
 
 //// STUDENT CODE
 ////
+
+
+ChatBot::ChatBot(const ChatBot &copy) {
+    std::cout << "ChatBot copy constructor " << this << std::endl;
+    _chatLogic = copy._chatLogic;
+    _rootNode = copy._rootNode;    
+}
+    
+ChatBot::ChatBot(ChatBot &&copy) {
+    std::cout << "ChatBot move constructor " << this << std::endl;
+    _chatLogic = copy._chatLogic;
+    _rootNode = copy._rootNode;
+    _image = copy._image;    
+    copy._image = NULL;    
+    _chatLogic->SetChatbotHandle(this);
+}
+
+ChatBot& ChatBot::operator=(const ChatBot &copy) {
+    std::cout << "ChatBot copy assigment operator " << this << std::endl;
+    _chatLogic = copy._chatLogic;
+    _rootNode = copy._rootNode;        
+    return *this;
+}
+
+ChatBot& ChatBot::operator= ( ChatBot&& copy )
+{
+    std::cout << "ChatBot Move assigment operator " << this << std::endl;
+    _chatLogic = copy._chatLogic;
+    _rootNode = copy._rootNode;
+    _image = copy._image;
+    copy._image = NULL;
+    _chatLogic->SetChatbotHandle(this);
+    return *this;
+}
 
 ////
 //// EOF STUDENT CODE
