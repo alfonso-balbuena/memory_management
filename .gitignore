@@ -1,4 +1,4 @@
-./build
+build/
 .vscode/
 src/.kdev4/
 src/src.kdev4
